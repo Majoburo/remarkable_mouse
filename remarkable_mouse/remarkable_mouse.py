@@ -88,10 +88,13 @@ def main():
         parser.add_argument('--monitor', default=0, type=int, metavar='NUM', help="monitor to output to")
         parser.add_argument('--threshold', metavar='THRESH', default=600, type=int, help="stylus pressure threshold (default 600)")
         parser.add_argument('--evdev', action='store_true', default=False, help="use evdev to support pen pressure (requires root, Linux only)")
+        parser.add_argument('--one', action='store_true', default=False, help="using a Remarkable 1, not 2")
 
         args = parser.parse_args()
 
-        remote_device = open_remote_device(args)
+        fstring = '/dev/input/event0' if args.one else '/dev/input/event1'
+
+        remote_device = open_remote_device(args,file=fstring)
 
         if args.debug:
             logging.getLogger('').setLevel(logging.DEBUG)
